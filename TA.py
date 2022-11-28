@@ -6,7 +6,7 @@ import os
 import random as rd
 
 w,h =1000,750
-x_time = 1 
+x_time = 0
 y_time = 0 
 angle_time = 0 
 pos_x = 0
