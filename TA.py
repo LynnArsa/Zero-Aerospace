@@ -7,7 +7,7 @@ import random
 import random as rd
 
 play = False
-w,h =1000,750
+w,h = 1000,750
 x_time = 0 
 y_time = 0 
 angle_time = 0 
@@ -15,7 +15,7 @@ pos_x = 0
 pos_y= 0
 pos_x_pemain = 0
 pos_y_pemain = 0
-score_pemain=0
+score_pemain = 0
 tingkatan=1
 x_gerak = 0
 y_gerak = 0
@@ -25,7 +25,7 @@ border_x = 450
 border_y = 500
 pos_x_meteor = 0
 pos_y_meteor = border_y
-kecepatan_meteor = 10
+kecepatan_meteor = 3
 
 darah = 380
 hit_meteor = 10
@@ -83,7 +83,7 @@ def drawTextNum(skor,xpos,ypos,r,b,g):
 
 def start_game():
     glPushMatrix()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)
     #W
     glVertex2f(100, 700)
@@ -95,7 +95,7 @@ def start_game():
     glVertex2f(200, 600)
     glVertex2f(200, 700)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)
     #E
     glVertex2f(233.1210229861111, 696.2745538452275)
@@ -107,7 +107,7 @@ def start_game():
     glVertex2f(235.9107135871987, 654.3468018232652)
     glVertex2f(293.8309413321435, 649.2043575959846)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)
     #L
     glVertex2f(342.3064724474077, 700.174034183131)
@@ -115,7 +115,7 @@ def start_game():
     glVertex2f(338.5564670287166, 603.0811592213937)
     glVertex2f(400, 600)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)
     #C
     glVertex2f(439.1888998460058, 698.1229013266112)
@@ -125,7 +125,7 @@ def start_game():
     glVertex2f(441.9842452020417, 603.0811592213937)
     glVertex2f(500, 600)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)
     #O
     glVertex2f(539.8213326632952, 700.918246682647)
@@ -137,7 +137,7 @@ def start_game():
     glVertex2f(600, 700)
     glVertex2f(539.8213326632952, 700.918246682647)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)    
     #M
     glVertex2f(637.3671513487684, 702.7736877417333)
@@ -149,7 +149,7 @@ def start_game():
     glVertex2f(718.7234354495873, 699.5205740046291)
     glVertex2f(718.7234354495873, 604.4788318994116)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES) 
     #E
     glVertex2f(757.8582704340888, 699.5205740046291)
@@ -161,7 +161,7 @@ def start_game():
     glVertex2f(763.4489611461604, 601.6834865433758)
     glVertex2f(813.7651775548051, 605.8765045774295)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES) 
     #T
     glVertex2f(387.4750107593433, 515.0277805062658)
@@ -171,7 +171,7 @@ def start_game():
     glVertex2f(414.0307916416835, 477.2906181997824)
     glVertex2f(454.5632993042028, 481.4836362338361)
     glEnd()
-    glColor3b(36, 150, 127)
+    glColor3b(10, 30, 40)
     glBegin(GL_LINES)    
     #O
     glVertex2f(476.9260621524894, 530.4021799644628)
@@ -385,17 +385,17 @@ def bintang():
 #     print(gerak)
 #     return gerak
 
-def meteor(x):
+def meteor():
     glPushMatrix()
-    global y_rintangan, x_r_player, pos_x_pemain, pos_y_pemain, game_over, border_x
-    y_rintangan-=kecepatan_meteor
-    if y_rintangan < -100 and x < border_x[1] or x < border_x[0]:
-        x_r_player = rd.randrange(x -30, x +10)
-        y_rintangan = h
-        x = border_x[1]
-        x = border_x[0]
-    glTranslated(y_rintangan,x,0)
-    glColor3ub(37, 188, 143)
+    global y_rintangan, x_r_player, pos_x_pemain, pos_y_pemain, game_over, border_x, pos_x_meteor, pos_y_meteor
+    pos_y_meteor-=kecepatan_meteor
+    # if y_rintangan < -100 and x < border_x[1] or x < border_x[0]:
+    #     x_r_player = rd.randrange(x -30, x +10)
+    #     y_rintangan = h
+    #     x = border_x[1]
+    #     x = border_x[0]
+    glTranslated(pos_x_meteor, pos_y_meteor,0)
+    glColor3ub(92, 47, 16)
     glBegin(GL_POLYGON)
     glVertex2f(500, 700)
     glVertex2f(530, 680)
@@ -409,105 +409,76 @@ def meteor(x):
     glPopMatrix()    
 
 def pesawat():
-    #badan
     global x_gerak, y_gerak
     glTranslated(x_gerak, y_gerak, 0)
-    glColor3ub(135,206,235)
+    #body
+    glColor3ub(240, 60, 60)
     glBegin(GL_POLYGON)
-    glVertex2f(500, 170)
-    glVertex2f(512, 160)
-    glVertex2f(517, 150)
-    glVertex2f(520,140)
-    glVertex2f(520,120)
-    glVertex2f(520,80)
-    glVertex2f(517.2854179081743,68.1157751633107)
-    glVertex2f(512.3597885653206,60.10339418436206)
-    glVertex2f(500,40)
-    glVertex2f(500.0414598267785,90.2434770334071)
-    glVertex2f(477.6589898385615,59.3641611084844)
-    glVertex2f(477.5909998541945,71.5842194592896)
-    glVertex2f(480,80)
-    glVertex2f(480,120)
-    glVertex2f(480,140)
-    glVertex2f(483.5, 150)
-    glVertex2f(488, 160)
+    glVertex2f(0, 140)
+    glVertex2f(10, 135)
+    glVertex2f(15, 130)
+    glVertex2f(20, 120)
+    glVertex2f(20, 100)
+    glVertex2f(20, 10)
+    glVertex2f(20, -50)
+    glVertex2f(0, -130)
+    glVertex2f(-20,- 50)
+    glVertex2f(-20, 50)
+    glVertex2f(-20, 120)
+    glVertex2f(-15, 130)
+    glVertex2f(-10, 135)
+    glVertex2f(0, 140)
     glEnd()
 
-    #kepala
-    glColor3ub(255, 255, 255)
+    # glass
+    glColor3ub(188,255,255)
     glBegin(GL_POLYGON)
-    glVertex2f(500, 166)
-    glVertex2f(502, 160)
-    glVertex2f(506, 150)
-    glVertex2f(508, 140)
-    glVertex2f(510, 130)
-    glVertex2f(490, 130)
-    glVertex2f(492, 140)
-    glVertex2f(494, 150)
-    glVertex2f(498, 160)
+    glVertex2f(-15, 120)
+    glVertex2f(-15, 100)
+    glVertex2f(15, 100)
+    glVertex2f(15, 120)
+    glVertex2f(10, 125)
+    glVertex2f(5, 130)
+    glVertex2f(0, 132)
+    glVertex2f(-5, 130)
+    glVertex2f(-10, 125)
+    glVertex2f(-15, 120)
     glEnd()
 
-    #sayap belakang atas
-    glColor3ub(255, 255, 255)
+    #right wing
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(500.0414598267785,90.2434770334071)
-    glVertex2f(477.6589898385615,59.3641611084844)
-    glVertex2f(472.3374871735562,52.0214995225147)
-    glVertex2f(460,35)
-    glVertex2f(460,25)
-    glVertex2f(470,20)
-    glVertex2f(500,40)
+    glVertex2f(20, 65)
+    glVertex2f(150, 60)
+    glVertex2f(130, 30)
+    glVertex2f(20, 20)
     glEnd()
 
-    #sayap kanan atas
-    glColor3ub(30,144,255)
+    #left wing
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(520,140)
-    glVertex2f(540, 132)
-    glVertex2f(560.4, 128)
-    glVertex2f(580, 124)
-    glVertex2f(584, 110)
-    glVertex2f(560.4, 111.6)
-    glVertex2f(540, 115.5)
-    glVertex2f(520,120)
+    glVertex2f(-20, 65)
+    glVertex2f(-150, 60)
+    glVertex2f(-130, 30)
+    glVertex2f(-20, 20)
     glEnd()
 
-    #sayap kiri atas
-    glColor3ub(30,144,255)
+    # back right wing
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(480,140)
-    glVertex2f(460, 132)
-    glVertex2f(440, 128)
-    glVertex2f(420, 124)
-    glVertex2f(416, 110)
-    glVertex2f(440, 111.6)
-    glVertex2f(460, 115.5)
-    glVertex2f(480, 120)
+    glVertex2f(16, -60)
+    glVertex2f(70, -70)
+    glVertex2f(80, -90)
+    glVertex2f(10, -85)
     glEnd()
 
-    #sayap kiri bawah
-    glColor3ub(30,144,255)
+    # left right wing
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(480,80)
-    glVertex2f(460.7036100049402, 67.1596824220173)
-    glVertex2f(440, 60)
-    glVertex2f(441.7376000257295, 47.6475735965235)
-    glVertex2f(456.3908454635123, 46.0815779008825)
-    glVertex2f(472.3374871735362,52.0214995225148)
-    glVertex2f(477.6589898385615, 59.3641611084844)
-    glVertex2f(477.5909998541945, 71.5842194592896)
-    glEnd()
-
-    #sayap kanan bawah
-    glColor3ub(30,144,255)
-    glBegin(GL_POLYGON)
-    glVertex2f(520, 80)
-    glVertex2f(540.3953288511068, 66.2158082734088)
-    glVertex2f(560, 60)
-    glVertex2f(557.9568520093655, 47.8712872673293)
-    glVertex2f(543.9747475840003, 46.3052915716884)
-    glVertex2f(527.4859562208875, 52.2434051031018)
-    glVertex2f(512.3597885653206,60.10339418436206)
+    glVertex2f(-16, -60)
+    glVertex2f(-70, -70)
+    glVertex2f(-80, -90)
+    glVertex2f(-10, -85)
     glEnd()
 
 def landasan():
@@ -562,17 +533,17 @@ def mouse_play_game(button, state, x, y):
 def input_keyboard(key,x,y):
     global x_gerak, y_gerak
     if key == GLUT_KEY_UP:
-        y_gerak += 5
-        print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
+        y_gerak += 10
+        # print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_DOWN:
-        y_gerak -= 5
-        print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
+        y_gerak -= 10
+        # print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_RIGHT:
-        x_gerak += 5
-        print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
+        x_gerak += 10
+        # print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_LEFT:
-        x_gerak -= 5
-        print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
+        x_gerak -= 10
+        # print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
 
 def timer(value):
     global x_time
@@ -609,7 +580,7 @@ def playGame():
     papan_score()
     landasan()
     bintang()
-    # meteor()
+    meteor()
     pesawat()
     # if game_over==False:
     #     player()
@@ -626,6 +597,7 @@ def playGame():
         drawText("Enter To Play",440,400,38, 33, 98)
       
 def showScreen():
+    glClearColor(0, 0.7, 0.8, 0.3)
     glClear(GL_COLOR_BUFFER_BIT)
     iterate()
     bintang()
@@ -639,7 +611,7 @@ def main():
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB)
     glutInitWindowSize(w, h)
-    glutInitWindowPosition(250,20)
+    glutInitWindowPosition(250, 20)
     glutCreateWindow("GAME ZERO AEROSPACE")
     glutDisplayFunc(showScreen)
     glutMouseFunc(mouse_play_game)
