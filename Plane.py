@@ -8,7 +8,7 @@ import random as rd
 
 def pesawat():
     #body
-    glColor3ub(135,206,235)
+    glColor3ub(240, 60, 60)
     glBegin(GL_POLYGON)
     glVertex2f(0, 140)
     glVertex2f(10, 135)
@@ -26,8 +26,23 @@ def pesawat():
     glVertex2f(0, 140)
     glEnd()
 
+    # glass
+    glColor3ub(188,255,255)
+    glBegin(GL_POLYGON)
+    glVertex2f(-15, 120)
+    glVertex2f(-15, 100)
+    glVertex2f(15, 100)
+    glVertex2f(15, 120)
+    glVertex2f(10, 125)
+    glVertex2f(5, 130)
+    glVertex2f(0, 132)
+    glVertex2f(-5, 130)
+    glVertex2f(-10, 125)
+    glVertex2f(-15, 120)
+    glEnd()
+
     #right wing
-    glColor3ub(135,206,235)
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
     glVertex2f(20, 65)
     glVertex2f(150, 60)
@@ -36,7 +51,7 @@ def pesawat():
     glEnd()
 
     #left wing
-    glColor3ub(135,206,235)
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
     glVertex2f(-20, 65)
     glVertex2f(-150, 60)
@@ -45,7 +60,7 @@ def pesawat():
     glEnd()
 
     # back right wing
-    glColor3ub(135,206,235)
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
     glVertex2f(16, -60)
     glVertex2f(70, -70)
@@ -54,7 +69,7 @@ def pesawat():
     glEnd()
 
     # left right wing
-    glColor3ub(135,206,235)
+    glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
     glVertex2f(-16, -60)
     glVertex2f(-70, -70)
