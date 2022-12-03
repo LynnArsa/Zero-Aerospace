@@ -552,8 +552,7 @@ def papan_score():
 def mouse_play_game(button, state, x, y):
     global play
     if button == GLUT_LEFT_BUTTON:
-        # if (x >= 300 and x <= 700) and (y >= 100 and y <=200):
-            play = True
+        play = True
 
 def input_keyboard(key,x,y):
     global x_gerak, y_gerak
