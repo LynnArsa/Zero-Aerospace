@@ -7,6 +7,7 @@ import random
 import random as rd
 
 def pesawat():
+    glScaled(5,5,0)
     #body
     glColor3ub(240, 60, 60)
     glBegin(GL_POLYGON)
