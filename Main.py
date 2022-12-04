@@ -8,7 +8,7 @@ import random
 import random as rd
 
 play = False
-w,h = 1000,750
+w,h = 1000,720
 x_time = 0 
 y_time = 0 
 angle_time = 0 
@@ -17,8 +17,8 @@ pos_y= 0
 pos_x_pemain = 0
 pos_y_pemain = 0
 score_pemain = 0
-x_gerak = 0
-y_gerak = 0
+x_gerak = 500
+y_gerak = 100
 y_rintangan=50
 detik = 1
 penambah_detik = 600//60
@@ -415,7 +415,7 @@ def pesawat():
     #         pos_y_pemain = -border_y
 
     glTranslated(x_gerak, y_gerak, 0)
-    glTranslated(500, 100, 0)
+    # glTranslated(500, 100, 0)
     glScaled(0.5,0.5,0)
 
     #body
@@ -520,7 +520,7 @@ def baca_json():
 
     waktu = int(penampung[0]['waktu'])
     return waktu
-
+    
 def papan_score():
     global detik, penambah_detik
     glPushMatrix()
@@ -556,17 +556,29 @@ def mouse_play_game(button, state, x, y):
 
 def input_keyboard(key,x,y):
     global x_gerak, y_gerak
-    if key == GLUT_KEY_UP:
-        y_gerak += 15
+    if key == GLUT_KEY_DOWN:
+        if y_gerak == 0 : 
+            y_gerak -= 0
+        else :
+            y_gerak -= 15
         # print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
-    elif key == GLUT_KEY_DOWN:
-        y_gerak -= 15
+    elif key == GLUT_KEY_UP:
+        if y_gerak == 950 : 
+            y_gerak += 0
+        else :
+            y_gerak += 15
         # print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_RIGHT:
-        x_gerak += 15
+        if x_gerak == 950 : 
+            x_gerak += 0
+        else :
+            x_gerak += 15
         # print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_LEFT:
-        x_gerak -= 15
+        if x_gerak == -400 : 
+            x_gerak -= 0
+        else :
+            x_gerak -= 15
         # print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
 
 def timer(value):
@@ -600,7 +612,7 @@ def iterate():
     glClearColor(0.0, 0.0, 0.0, 1.0)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluOrtho2D(0.0, w, 0.0, h)
+    gluOrtho2D(0, w, 0, h)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
