@@ -8,33 +8,27 @@ import random
 import random as rd
 
 play = False
-w,h = 1000,750
+selesai = False
+w,h = 1000,720
 x_time = 0 
 y_time = 0 
-angle_time = 0 
-pos_x = 0
-pos_y= 0
 pos_x_pemain = 0
 pos_y_pemain = 0
-score_pemain = 0
-x_gerak = 0
-y_gerak = 0
+x_gerak = 500
+y_gerak = 100
 y_rintangan=50
 detik = 1
 penambah_detik = 600//60
 
 border_x = 1000
-border_y = 750
+border_y = 720
 pos_x_meteor = 0
 pos_y_meteor = border_y
 kecepatan_meteor = 10
 
-selesai=False
-
 x_r_player = random.randrange(300,550,10)
 x_pesawat=10
 y_pesawat=10
-game_over = False
 jumlah_bintang = 1000
 jumlah_meteor=3
 
@@ -403,19 +397,8 @@ def meteor():
 def pesawat():
     global x_gerak, y_gerak, pos_x_pemain, pos_y_pemain, selesai, border_x, border_y
     glPushMatrix()
-    # if not selesai:
-    #     if pos_x_pemain > border_x+1000:
-    #         pos_x_pemain = border_x+1000
-    #     if pos_x_pemain < -border_x:
-    #         pos_x_pemain = -border_x
-
-    #     if pos_y_pemain > border_y-750:
-    #         pos_y_pemain = border_y-750
-    #     if pos_y_pemain < -border_y:
-    #         pos_y_pemain = -border_y
 
     glTranslated(x_gerak, y_gerak, 0)
-    glTranslated(500, 100, 0)
     glScaled(0.5,0.5,0)
 
     #body
@@ -520,7 +503,7 @@ def baca_json():
 
     waktu = int(penampung[0]['waktu'])
     return waktu
-
+    
 def papan_score():
     global detik, penambah_detik
     glPushMatrix()
@@ -552,21 +535,42 @@ def papan_score():
 def mouse_play_game(button, state, x, y):
     global play
     if button == GLUT_LEFT_BUTTON:
+        # if (x >= 300 and x <= 700) and (y >= 100 and y <= 200):
         play = True
 
+def collision():
+    if (pos_x_pemain-50 <= pos_x_meteor+50 <= pos_x_pemain+50 or pos_x_pemain-50 <= pos_x_meteor-50 <= pos_x_pemain+50) and (pos_y_pemain-50 <= pos_y_meteor+50 <= pos_y_pemain+50 or pos_y_pemain-50 <= pos_y_meteor-50 <= pos_y_pemain+50):
+        print('Terjadi tubrukan')
+
 def input_keyboard(key,x,y):
-    global x_gerak, y_gerak
-    if key == GLUT_KEY_UP:
-        y_gerak += 15
+    global x_gerak, y_gerak, pos_x_meteor, pos_y_meteor
+    if key == GLUT_KEY_DOWN:
+        if y_gerak == 10 : 
+            y_gerak -= 0
+        else :
+            y_gerak -= 15
+            collision()
         # print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
-    elif key == GLUT_KEY_DOWN:
-        y_gerak -= 15
+    elif key == GLUT_KEY_UP:
+        if y_gerak == 700 : 
+            y_gerak += 0
+        else :
+            y_gerak += 15
+            collision()
         # print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_RIGHT:
-        x_gerak += 15
+        if x_gerak == 950 : 
+            x_gerak += 0
+        else :
+            x_gerak += 15
+            collision()
         # print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_LEFT:
-        x_gerak -= 15
+        if x_gerak == 50 : 
+            x_gerak -= 0
+        else :
+            x_gerak -= 15
+            collision()
         # print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
 
 def timer(value):
@@ -582,25 +586,12 @@ def update(value):
     glutPostRedisplay()
     glutTimerFunc(10,update,0)
 
-# def collision():
-#     global pos_x_pemain, pos_y_pemain, pos_x_meteor, pos_y_meteor, start_game
-#     if pos_x_pemain -500>= pos_x_meteor:
-#         if pos_y_pemain -30 >= pos_y_meteor or pos_y_pemain +10 >=pos_y_meteor:
-#             pos_x_pemain = 0
-#             pos_y_meteor = random.randint(-100,500)
-#     if pos_x_pemain -100>= pos_x_meteor:
-#         if pos_y_pemain -30 >= pos_y_meteor or pos_y_pemain +10 >=pos_y_meteor:
-#             pos_x_pemain = 0
-#             pos_y_meteor = random.randint(-100,500)      
-#     if pos_x_pemain >= 1000:
-#         start_game = False      
-
 def iterate():
     glViewport(0, 0, w, h)
     glClearColor(0.0, 0.0, 0.0, 1.0)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluOrtho2D(0.0, w, 0.0, h)
+    gluOrtho2D(0, w, 0, h)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
@@ -611,20 +602,31 @@ def playGame():
     bintang()
     meteor()
     pesawat()
-    # collision()
+    glPopMatrix()
 
-    # if game_over==False:
-    #     papan_score()
-    #     meteor(x_r_player)
-
-    if game_over==True:
-        # bg_text(-40,0)
-        glRasterPos(420,420)
-        for c in "GAME OVER":
-            glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_24, ord(c) )
+def game_over():
+    glPushMatrix()
+    if collision==False:
+        glColor3b(36, 150, 127)
+        glBegin(GL_QUADS)
+        glVertex2f(300, 355)
+        glVertex2f(300, 500)
+        glVertex2f(700, 500)
+        glVertex2f(700, 355)
+        glEnd()
+        glColor3ub(0,0,0)
+        glLineWidth(10)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(300, 355)
+        glVertex2f(300, 500)
+        glVertex2f(700, 500)
+        glVertex2f(700, 355)
+        glEnd()
+        drawTextBold(" G A M E   O V E R ",420,420)
     glPopMatrix()
 
 def showScreen():
+    # global mulai, selesai
     glClearColor(0, 0.7, 0.8, 0.3)
     glClear(GL_COLOR_BUFFER_BIT)
     iterate()
@@ -633,7 +635,15 @@ def showScreen():
         start_game()
     else:
         playGame()
+
+    # if selesai:
+    #     mulai=False
+    #     selesai=False
+    # else:
+    #     game_over()
+
     glutSwapBuffers()
+    glFlush()
 
 def main():
     glutInit(sys.argv)
