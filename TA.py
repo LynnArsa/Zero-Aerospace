@@ -27,6 +27,7 @@ pos_y_meteor = border_y
 kecepatan_meteor = 10
 
 x_r_player = random.randrange(300,550,10)
+crash_wal_player = False
 x_pesawat=10
 y_pesawat=10
 jumlah_bintang = 1000
@@ -538,12 +539,50 @@ def mouse_play_game(button, state, x, y):
         # if (x >= 300 and x <= 700) and (y >= 100 and y <= 200):
         play = True
 
+def playGame():
+    glPushMatrix()
+    papan_score()
+    landasan()
+    bintang()
+    meteor()
+    pesawat()
+    glPopMatrix()
+
+def game_over():
+    glPushMatrix()
+    if crash_wal_player==True:
+        glColor3b(36, 150, 127)
+        glBegin(GL_QUADS)
+        glVertex2f(300, 355)
+        glVertex2f(300, 500)
+        glVertex2f(700, 500)
+        glVertex2f(700, 355)
+        glEnd()
+        glColor3ub(0,0,0)
+        glLineWidth(10)
+        glBegin(GL_LINE_LOOP)
+        glVertex2f(300, 355)
+        glVertex2f(300, 500)
+        glVertex2f(700, 500)
+        glVertex2f(700, 355)
+        glEnd()
+        drawTextBold(" G A M E   O V E R ",420,420)
+    glPopMatrix()
+
 def collision():
-    if (pos_x_pemain-50 <= pos_x_meteor+50 <= pos_x_pemain+50 or pos_x_pemain-50 <= pos_x_meteor-50 <= pos_x_pemain+50) and (pos_y_pemain-50 <= pos_y_meteor+50 <= pos_y_pemain+50 or pos_y_pemain-50 <= pos_y_meteor-50 <= pos_y_pemain+50):
+    glPushMatrix()
+    if (pos_x_pemain-30 <= pos_x_meteor+30 <= pos_x_pemain+30 or pos_x_pemain-30 <= pos_x_meteor-30 <= pos_x_pemain+30) and (pos_y_pemain-50 <= pos_y_meteor+10 <= pos_y_pemain+10 or pos_y_pemain-10 <= pos_y_meteor-10 <= pos_y_pemain+10):
         print('Terjadi tubrukan')
+    
+    if crash_wal_player == False:
+        playGame()
+    else:
+        game_over()
+    glPopMatrix()
+    glFlush
 
 def input_keyboard(key,x,y):
-    global x_gerak, y_gerak, pos_x_meteor, pos_y_meteor
+    global x_gerak, y_gerak
     if key == GLUT_KEY_DOWN:
         if y_gerak == 10 : 
             y_gerak -= 0
@@ -594,36 +633,6 @@ def iterate():
     gluOrtho2D(0, w, 0, h)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-
-def playGame():
-    glPushMatrix()
-    papan_score()
-    landasan()
-    bintang()
-    meteor()
-    pesawat()
-    glPopMatrix()
-
-def game_over():
-    glPushMatrix()
-    if collision==False:
-        glColor3b(36, 150, 127)
-        glBegin(GL_QUADS)
-        glVertex2f(300, 355)
-        glVertex2f(300, 500)
-        glVertex2f(700, 500)
-        glVertex2f(700, 355)
-        glEnd()
-        glColor3ub(0,0,0)
-        glLineWidth(10)
-        glBegin(GL_LINE_LOOP)
-        glVertex2f(300, 355)
-        glVertex2f(300, 500)
-        glVertex2f(700, 500)
-        glVertex2f(700, 355)
-        glEnd()
-        drawTextBold(" G A M E   O V E R ",420,420)
-    glPopMatrix()
 
 def showScreen():
     # global mulai, selesai
