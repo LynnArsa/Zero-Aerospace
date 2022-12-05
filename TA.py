@@ -635,7 +635,6 @@ def iterate():
     glLoadIdentity()
 
 def showScreen():
-    # global mulai, selesai
     glClearColor(0, 0.7, 0.8, 0.3)
     glClear(GL_COLOR_BUFFER_BIT)
     iterate()
@@ -645,12 +644,6 @@ def showScreen():
     else:
         playGame()
 
-    # if selesai:
-    #     mulai=False
-    #     selesai=False
-    # else:
-    #     game_over()
-
     glutSwapBuffers()
     glFlush()
 
@@ -659,7 +652,7 @@ def main():
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB)
     glutInitWindowSize(w, h)
     glutInitWindowPosition(250, 20)
-    glutCreateWindow("GAME ZERO AEROSPACE")
+    glutCreateWindow("GAME ZERO AEROSPACE 'Boeing777'")
     glutDisplayFunc(showScreen)
     glutMouseFunc(mouse_play_game)
     glutSpecialFunc(input_keyboard)
