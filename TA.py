@@ -10,28 +10,26 @@ import random as rd
 play = False
 selesai = False
 w,h = 1000,720
+
+xPlayer = 50
+yPlayer = 50
+xPosition = 500
+yPosition = 100
+
 x_time = 0 
 y_time = 0 
-pos_x_pemain = 0
-pos_y_pemain = 0
-x_gerak = 500
-y_gerak = 100
-y_rintangan=50
 detik = 1
 penambah_detik = 600//60
 
-border_x = 1000
-border_y = 720
-pos_x_meteor = 0
-pos_y_meteor = border_y
+xBorder = 1000
+yBorder = 720
+
+xMeteorPos = 0
+yMeteorPos = yBorder
 kecepatan_meteor = 10
 
 x_r_player = random.randrange(300,550,10)
-crash_wal_player = False
-x_pesawat=10
-y_pesawat=10
-jumlah_bintang = 1000
-jumlah_meteor=3
+crash = False
 
 def drawText(ch,xpos,ypos,r,b,g):
     glPushMatrix()
@@ -355,33 +353,18 @@ def bg_text(x,y):
     glVertex2f(295+x,260+y)
     glEnd()
 
-def bintang():
-    glPushMatrix()
-    glPointSize(3)
-    glRotated(180,0,0,0)
-    glColor3f(1.0, 1.0, 1.0) #RGB
-    glBegin(GL_POINTS)
-    y = 1000
-    for i in range(jumlah_bintang):
-        x = rd.randrange(-2000,2000)
-        glVertex2f(x,y)
-        if y != 1000:
-            x = x
-        y -= 100
-    glEnd()
-    glPopMatrix()
 
 def meteor():
-    global y_rintangan, x_r_player, pos_x_pemain, pos_y_pemain, border_x, pos_x_meteor, pos_y_meteor
+    global x_r_player, xPlayer, yPlayer, xBorder, xMeteorPos, yMeteorPos
     glPushMatrix()
     glScaled(0.5,0.5,0)
     glTranslated(500, 0, 0)
-    pos_y_meteor-=kecepatan_meteor
-    if pos_y_meteor < -border_y:
-        pos_y_meteor = border_y
-        pos_x_meteor = rd.randrange(pos_x_pemain-345, pos_x_pemain+200)
+    yMeteorPos -= kecepatan_meteor
+    if yMeteorPos < -yBorder:
+        yMeteorPos = yBorder
+        xMeteorPos = rd.randrange(xPlayer-345, xPlayer+200)
 
-    glTranslated(pos_x_meteor, pos_y_meteor,0)
+    glTranslated(xMeteorPos, yMeteorPos,0)
     glColor3ub(92, 47, 16)
     glBegin(GL_POLYGON)
     glVertex2f(500, 700)
@@ -396,10 +379,10 @@ def meteor():
     glPopMatrix()    
 
 def pesawat():
-    global x_gerak, y_gerak, pos_x_pemain, pos_y_pemain, selesai, border_x, border_y
+    global xPosition, yPosition, xPlayer, yPlayer, selesai, xBorder, yBorder
     glPushMatrix()
 
-    glTranslated(x_gerak, y_gerak, 0)
+    glTranslated(xPosition, yPosition, 0)
     glScaled(0.5,0.5,0)
 
     #body
@@ -533,24 +516,23 @@ def papan_score():
     
     glPopMatrix()    
 
-def mouse_play_game(button, state, x, y):
+def playButton(button, state, x, y):
     global play
     if button == GLUT_LEFT_BUTTON:
-        # if (x >= 300 and x <= 700) and (y >= 100 and y <= 200):
-        play = True
+        if (x >= 300 and x <= 700) and (y >= 525 and y <= 625):
+            play = True
 
 def playGame():
     glPushMatrix()
     papan_score()
     landasan()
-    bintang()
     meteor()
     pesawat()
     glPopMatrix()
 
 def game_over():
     glPushMatrix()
-    if crash_wal_player==True:
+    if crash == True:
         glColor3b(36, 150, 127)
         glBegin(GL_QUADS)
         glVertex2f(300, 355)
@@ -571,10 +553,16 @@ def game_over():
 
 def collision():
     glPushMatrix()
-    if (pos_x_pemain-30 <= pos_x_meteor+30 <= pos_x_pemain+30 or pos_x_pemain-30 <= pos_x_meteor-30 <= pos_x_pemain+30) and (pos_y_pemain-50 <= pos_y_meteor+10 <= pos_y_pemain+10 or pos_y_pemain-10 <= pos_y_meteor-10 <= pos_y_pemain+10):
-        print('Terjadi tubrukan')
+    if (xMeteorPos-50<= xPlayer+50 <= xMeteorPos+50 or xMeteorPos-50<= xPlayer-50 <= xMeteorPos+50) and (yMeteorPos-50<= yPlayer+50 <= yMeteorPos+50 or yMeteorPos-50<= yPlayer-50 <= yMeteorPos+50):
+        print("Terjadi Collision")
+    elif yMeteorPos-50<= yPlayer+50 <= yMeteorPos+50 or yMeteorPos-50<= yPlayer-50 <= yMeteorPos+50:
+        print("Terjadi Overlap pada Sumbu Y")
+    elif xMeteorPos-50<= xPlayer+50 <= xMeteorPos+50 or xMeteorPos-50<= xPlayer-50 <= xMeteorPos+50:
+        print("Terjadi Overlap pada Sumbu X")
+    # if (xPlayer-30 <= xMeteorPos+40 <= xPlayer+30 or xPlayer-30 <= xMeteorPos-30 <= xPlayer+30) and (yPosition-50 <= yMeteorPos+10 <= yPlayer+10 or yPlayer-10 <= yMeteorPos-10 <= yPlayer+10):
+    #     print('Terjadi tubrukan')
     
-    if crash_wal_player == False:
+    if crash == False:
         playGame()
     else:
         game_over()
@@ -582,35 +570,31 @@ def collision():
     glFlush
 
 def input_keyboard(key,x,y):
-    global x_gerak, y_gerak
+    global xPosition, yPosition
     if key == GLUT_KEY_DOWN:
-        if y_gerak == 10 : 
-            y_gerak -= 0
+        if yPosition == 10 : 
+            yPosition -= 0
         else :
-            y_gerak -= 15
+            yPosition -= 15
             collision()
-        # print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_UP:
-        if y_gerak == 700 : 
-            y_gerak += 0
+        if yPosition == 700 : 
+            yPosition += 0
         else :
-            y_gerak += 15
+            yPosition += 15
             collision()
-        # print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_RIGHT:
-        if x_gerak == 950 : 
-            x_gerak += 0
+        if xPosition == 950 : 
+            xPosition += 0
         else :
-            x_gerak += 15
+            xPosition += 15
             collision()
-        # print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
     elif key == GLUT_KEY_LEFT:
-        if x_gerak == 50 : 
-            x_gerak -= 0
+        if xPosition == 50 : 
+            xPosition -= 0
         else :
-            x_gerak -= 15
+            xPosition -= 15
             collision()
-        # print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
 
 def timer(value):
     global x_time
@@ -638,7 +622,6 @@ def showScreen():
     glClearColor(0, 0.7, 0.8, 0.3)
     glClear(GL_COLOR_BUFFER_BIT)
     iterate()
-    bintang()
     if play == False:
         start_game()
     else:
@@ -654,7 +637,7 @@ def main():
     glutInitWindowPosition(250, 20)
     glutCreateWindow("GAME ZERO AEROSPACE 'Boeing777'")
     glutDisplayFunc(showScreen)
-    glutMouseFunc(mouse_play_game)
+    glutMouseFunc(playButton)
     glutSpecialFunc(input_keyboard)
     glutTimerFunc(50, update, 0)
     timer(0)
