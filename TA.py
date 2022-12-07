@@ -10,28 +10,26 @@ import random as rd
 play = False
 selesai = False
 w,h = 1000,720
+
+xPlayer = 50
+yPlayer = 50
+xPosition = 500
+yPosition = 100
+
 x_time = 0 
 y_time = 0 
-pos_x_pemain = 0
-pos_y_pemain = 0
-x_gerak = 500
-y_gerak = 100
-y_rintangan=50
 detik = 1
 penambah_detik = 600//60
 
-border_x = 1000
-border_y = 720
-pos_x_meteor = 0
-pos_y_meteor = border_y
-kecepatan_meteor = 10
+xBorder = 1000
+yBorder = 720
+
+xMeteorPos = 0
+yMeteorPos = yBorder
+kecepatan_meteor = 5
 
 x_r_player = random.randrange(300,550,10)
-crash_wal_player = False
-x_pesawat=10
-y_pesawat=10
-jumlah_bintang = 1000
-jumlah_meteor=3
+crash = False
 
 def drawText(ch,xpos,ypos,r,b,g):
     glPushMatrix()
@@ -355,121 +353,97 @@ def bg_text(x,y):
     glVertex2f(295+x,260+y)
     glEnd()
 
-def bintang():
-    glPushMatrix()
-    glPointSize(3)
-    glRotated(180,0,0,0)
-    glColor3f(1.0, 1.0, 1.0) #RGB
-    glBegin(GL_POINTS)
-    y = 1000
-    for i in range(jumlah_bintang):
-        x = rd.randrange(-2000,2000)
-        glVertex2f(x,y)
-        if y != 1000:
-            x = x
-        y -= 100
-    glEnd()
-    glPopMatrix()
 
 def meteor():
-    global y_rintangan, x_r_player, pos_x_pemain, pos_y_pemain, border_x, pos_x_meteor, pos_y_meteor
+    global x_r_player, xPlayer, yPlayer, xBorder, xMeteorPos, yMeteorPos
     glPushMatrix()
-    glScaled(0.5,0.5,0)
-    glTranslated(500, 0, 0)
-    pos_y_meteor-=kecepatan_meteor
-    if pos_y_meteor < -border_y:
-        pos_y_meteor = border_y
-        pos_x_meteor = rd.randrange(pos_x_pemain-345, pos_x_pemain+200)
+    yMeteorPos -= kecepatan_meteor
+    if yMeteorPos < -yBorder:
+        yMeteorPos = yBorder
+        xMeteorPos = rd.randrange(50, xBorder)
 
-    glTranslated(pos_x_meteor, pos_y_meteor,0)
+    glTranslated(xMeteorPos, yMeteorPos, 0)
     glColor3ub(92, 47, 16)
     glBegin(GL_POLYGON)
-    glVertex2f(500, 700)
-    glVertex2f(530, 680)
-    glVertex2f(550, 650)
-    glVertex2f(530, 620)
-    glVertex2f(500, 600)
-    glVertex2f(470, 620)
-    glVertex2f(450, 650)
-    glVertex2f(470, 680)
+    glVertex2f(0, 30)
+    glVertex2f(20, 20)
+    glVertex2f(30, 0)
+    glVertex2f(20, -20)
+    glVertex2f(0, -30)
+    glVertex2f(-20, -20)
+    glVertex2f(-30, 0)
+    glVertex2f(-20, 20)
+    glVertex2f(0, 30)
     glEnd()
     glPopMatrix()    
 
 def pesawat():
-    global x_gerak, y_gerak, pos_x_pemain, pos_y_pemain, selesai, border_x, border_y
+    global xPosition, yPosition, xPlayer, yPlayer, selesai, xBorder, yBorder
     glPushMatrix()
 
-    glTranslated(x_gerak, y_gerak, 0)
-    glScaled(0.5,0.5,0)
+    glTranslated(xPosition, yPosition, 0)
 
     #body
     glColor3ub(240, 60, 60)
     glBegin(GL_POLYGON)
-    glVertex2f(0, 140)
-    glVertex2f(10, 135)
-    glVertex2f(15, 130)
-    glVertex2f(20, 120)
-    glVertex2f(20, 100)
-    glVertex2f(20, 10)
-    glVertex2f(20, -50)
-    glVertex2f(0, -130)
-    glVertex2f(-20,- 50)
-    glVertex2f(-20, 50)
-    glVertex2f(-20, 120)
-    glVertex2f(-15, 130)
-    glVertex2f(-10, 135)
-    glVertex2f(0, 140)
+    glVertex2f(0, 60)
+    glVertex2f(7.5, 57.5)
+    glVertex2f(10, 50)
+    glVertex2f(10, -40)
+    glVertex2f(5, -60)
+    glVertex2f(-5, -60)
+    glVertex2f(-10, -40)
+    glVertex2f(-10, 50)
+    glVertex2f(-7.5, 57.5)
+    glVertex2f(0, 60)
     glEnd()
 
     # glass
     glColor3ub(188,255,255)
     glBegin(GL_POLYGON)
-    glVertex2f(-15, 120)
-    glVertex2f(-15, 100)
-    glVertex2f(15, 100)
-    glVertex2f(15, 120)
-    glVertex2f(10, 125)
-    glVertex2f(5, 130)
-    glVertex2f(0, 132)
-    glVertex2f(-5, 130)
-    glVertex2f(-10, 125)
-    glVertex2f(-15, 120)
+    glVertex2f(0, 55)
+    glVertex2f(7.5, 52.5)
+    glVertex2f(7.5, 42.5)
+    glVertex2f(-7.5, 42.5)
+    glVertex2f(-7.5, 52.5)
+    glVertex2f(0, 55)
     glEnd()
 
     #right wing
     glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(20, 65)
-    glVertex2f(150, 60)
-    glVertex2f(130, 30)
-    glVertex2f(20, 20)
+    glVertex2f(10, 30)
+    glVertex2f(60, 30)
+    glVertex2f(50, 10)
+    glVertex2f(10, 5)
+ 
     glEnd()
 
     #left wing
     glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(-20, 65)
-    glVertex2f(-150, 60)
-    glVertex2f(-130, 30)
-    glVertex2f(-20, 20)
+    glVertex2f(-10, 30)
+    glVertex2f(-60, 30)
+    glVertex2f(-50, 10)
+    glVertex2f(-10, 5)
     glEnd()
 
     # back right wing
     glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(16, -60)
-    glVertex2f(70, -70)
-    glVertex2f(80, -90)
-    glVertex2f(10, -85)
+    glVertex2f(10, -30)
+    glVertex2f(30, -35)
+    glVertex2f(35, -50)
+    glVertex2f(8.75, -45)
     glEnd()
 
     # left right wing
     glColor3ub(182,25,25)
     glBegin(GL_POLYGON)
-    glVertex2f(-16, -60)
-    glVertex2f(-70, -70)
-    glVertex2f(-80, -90)
-    glVertex2f(-10, -85)
+    glVertex2f(-10, -30)
+    glVertex2f(-30, -35)
+    glVertex2f(-35, -50)
+    glVertex2f(-8.75, -45)
     glEnd()
     glPopMatrix()
 
@@ -484,26 +458,20 @@ def landasan():
     glEnd()
     glPopMatrix()
 
-def tulis_json(value):
-    penampung = [{'waktu':str(value)}]
-    with open('waktuTerbaik.json','w') as berkas:
-        json.dump(penampung, berkas, indent = 4)
-
 def baca_json():
-    penampung = [] 
+    global detik
+
     try:
-        with open ('waktuTerbaik.json','r') as berkas:
-                data = json.load(berkas)
-                for i in data:
-                    penampung.append(i)
-
+        with open ('waktuTerbaik.txt',mode='r') as f:
+            line = int(f.readline())
+            if detik//1000 > line:    #jika lebih besar dari sebelumnya isi dgn yg baru
+                with open('waktuTerbaik.txt',mode='w') as f:
+                    line = f.write(str(detik//1000))        
     except:
-        penampung = [{'waktu':'9999'}]
-        with open('waktuTerbaik.json','w') as berkas:
-            json.dump(penampung, berkas, indent = 4)
-
-    waktu = int(penampung[0]['waktu'])
-    return waktu
+        with open('waktuTerbaik.txt',mode='w') as f:
+            line = f.write(str(detik//1000))
+            return 0
+    return line
     
 def papan_score():
     global detik, penambah_detik
@@ -521,7 +489,7 @@ def papan_score():
     for c in str(detik//1000):
         glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_24, ord(c) )
     glRasterPos(830,660)
-    for c in "TIME :":
+    for c in "TIMES :":
         glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_24, ord(c) )
     
     glRasterPos(920,615)
@@ -531,26 +499,47 @@ def papan_score():
     for c in "BEST :":
         glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_24, ord(c) )
     
-    glPopMatrix()    
+    glPopMatrix()
 
-def mouse_play_game(button, state, x, y):
-    global play
+def playButton(button, state, x, y):
+    global play, crash
     if button == GLUT_LEFT_BUTTON:
-        # if (x >= 300 and x <= 700) and (y >= 100 and y <= 200):
-        play = True
+        if (x >= 300 and x <= 700) and (y >= 525 and y <= 625):
+            play = True
+        elif (x >= 300 and x <= 700) and (y >= 880 and y <= 925):
+            play = False
+            crash = False
 
 def playGame():
+    global xMeteorPos,yMeteorPos,xPosition,yPosition,crash
     glPushMatrix()
     papan_score()
     landasan()
-    bintang()
     meteor()
     pesawat()
+    #------------------------collision--------------------------#
+    x_player_topLeft = xPosition -60
+    x_player_topRight = xPosition +60
+
+    xMeteorPos_bottomLeft = xMeteorPos  - 30
+    xMeteorPos_bottomRight = xMeteorPos  + 30
+    if  yPosition-20 <= yMeteorPos <= yPosition+20 :
+        if x_player_topLeft < xMeteorPos_bottomLeft < x_player_topRight or\
+            x_player_topLeft < xMeteorPos_bottomRight < x_player_topRight:
+            print('mati kau')
+            crash = True
+            game_over()
+            baca_json()
+    #------------------------------------------------------------#
     glPopMatrix()
 
 def game_over():
+    global kecepatan_meteor, kecepatan_pesawat
     glPushMatrix()
-    if crash_wal_player==True:
+    
+    if crash == True:
+        kecepatan_meteor = 0
+        kecepatan_pesawat = 0
         glColor3b(36, 150, 127)
         glBegin(GL_QUADS)
         glVertex2f(300, 355)
@@ -566,64 +555,52 @@ def game_over():
         glVertex2f(700, 500)
         glVertex2f(700, 355)
         glEnd()
-        drawTextBold(" G A M E   O V E R ",420,420)
+        drawTextBold(" G A M E   O V E R ",420,450)
+        drawText("  Click  To  Play",430,405,0, 0, 0)
     glPopMatrix()
 
-def collision():
-    glPushMatrix()
-    if (pos_x_pemain-30 <= pos_x_meteor+30 <= pos_x_pemain+30 or pos_x_pemain-30 <= pos_x_meteor-30 <= pos_x_pemain+30) and (pos_y_pemain-50 <= pos_y_meteor+10 <= pos_y_pemain+10 or pos_y_pemain-10 <= pos_y_meteor-10 <= pos_y_pemain+10):
-        print('Terjadi tubrukan')
-    
-    if crash_wal_player == False:
-        playGame()
-    else:
-        game_over()
-    glPopMatrix()
-    glFlush
-
+kecepatan_pesawat = 15
 def input_keyboard(key,x,y):
-    global x_gerak, y_gerak
+    global xPosition, yPosition
     if key == GLUT_KEY_DOWN:
-        if y_gerak == 10 : 
-            y_gerak -= 0
+        if yPosition == 10 : 
+            yPosition -= 0
         else :
-            y_gerak -= 15
-            collision()
-        # print("Tombol Atas ditekan ", "x : ", pos_x, " y : ", pos_y)
+            yPosition -= kecepatan_pesawat
+            # collision()
     elif key == GLUT_KEY_UP:
-        if y_gerak == 700 : 
-            y_gerak += 0
+        if yPosition == 700 : 
+            yPosition += 0
         else :
-            y_gerak += 15
-            collision()
-        # print("Tombol Bawah ditekan ", "x : ", pos_x, " y : ", pos_y)
+            yPosition += kecepatan_pesawat
+            # collision()
     elif key == GLUT_KEY_RIGHT:
-        if x_gerak == 950 : 
-            x_gerak += 0
+        if xPosition == 950 : 
+            xPosition += 0
         else :
-            x_gerak += 15
-            collision()
-        # print("Tombol Kanan ditekan ", "x : ", pos_x, " y : ", pos_y)
+            xPosition += kecepatan_pesawat
+            # collision()
     elif key == GLUT_KEY_LEFT:
-        if x_gerak == 50 : 
-            x_gerak -= 0
+        if xPosition == 50 : 
+            xPosition -= 0
         else :
-            x_gerak -= 15
-            collision()
-        # print("Tombol Kiri ditekan ", "x : ", pos_x, " y : ", pos_y)
+            xPosition -= kecepatan_pesawat
+            # collision()
+    print(xPosition, yPosition)
 
 def timer(value):
-    global x_time
-    x_time -=1
-    if x_time == -1400:
-        x_time -= 0
+        global x_time
+        x_time -=1
         if x_time == -1400:
-            x_time +=1400
-    glutTimerFunc(2, timer, 0)
+            x_time -= 0
+            if x_time == -1400:
+                x_time +=1400
+        glutTimerFunc(2, timer, 0)
 
 def update(value):
-    glutPostRedisplay()
-    glutTimerFunc(10,update,0)
+    if not crash : 
+        glutPostRedisplay()
+        glutTimerFunc(10,update,0)
 
 def iterate():
     glViewport(0, 0, w, h)
@@ -636,9 +613,8 @@ def iterate():
 
 def showScreen():
     glClearColor(0, 0.7, 0.8, 0.3)
-    glClear(GL_COLOR_BUFFER_BIT)
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     iterate()
-    bintang()
     if play == False:
         start_game()
     else:
@@ -654,7 +630,7 @@ def main():
     glutInitWindowPosition(250, 20)
     glutCreateWindow("GAME ZERO AEROSPACE 'Boeing777'")
     glutDisplayFunc(showScreen)
-    glutMouseFunc(mouse_play_game)
+    glutMouseFunc(playButton)
     glutSpecialFunc(input_keyboard)
     glutTimerFunc(50, update, 0)
     timer(0)
