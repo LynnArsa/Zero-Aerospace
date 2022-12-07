@@ -544,7 +544,7 @@ def game_over():
 
 def collision():
     glPushMatrix()
-    if (xMeteorPos-50<= xPlayer+50 <= xMeteorPos+50 or xMeteorPos-50<= xPlayer-50 <= xMeteorPos+50) and (yMeteorPos-50<= yPlayer+50 <= yMeteorPos+50 or yMeteorPos-50<= yPlayer-50 <= yMeteorPos+50):
+    if (xMeteorPos-30 <= xPlayer+30 <= xMeteorPos+30 or xMeteorPos-30<= xPlayer-30 <= xMeteorPos+30) and (yMeteorPos-30<= yPlayer+30 <= yMeteorPos+30 or yMeteorPos-30<= yPlayer-30 <= yMeteorPos+30):
         print("Terjadi Collision")
     elif yMeteorPos-50<= yPlayer+50 <= yMeteorPos+50 or yMeteorPos-50<= yPlayer-50 <= yMeteorPos+50:
         print("Terjadi Overlap pada Sumbu Y")
