@@ -526,7 +526,7 @@ def playGame():
     if  yPosition-20 <= yMeteorPos <= yPosition+20 :
         if x_player_topLeft < xMeteorPos_bottomLeft < x_player_topRight or\
             x_player_topLeft < xMeteorPos_bottomRight < x_player_topRight:
-            print('mati kau')
+            print('Pesawat Menabrak Meteor')
             crash = True
             game_over()
             baca_json()
@@ -555,8 +555,8 @@ def game_over():
         glVertex2f(700, 500)
         glVertex2f(700, 355)
         glEnd()
-        drawTextBold(" G A M E   O V E R ",420,450)
-        drawText("  Click  To  Play",430,405,0, 0, 0)
+        drawTextBold(" G A M E   O V E R ",420,420)
+        # drawText("  Click  To  Play",430,405,0, 0, 0)
     glPopMatrix()
 
 kecepatan_pesawat = 15
@@ -586,7 +586,7 @@ def input_keyboard(key,x,y):
         else :
             xPosition -= kecepatan_pesawat
             # collision()
-    print(xPosition, yPosition)
+    # print(xPosition, yPosition)
 
 def timer(value):
         global x_time
