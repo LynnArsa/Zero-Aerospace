@@ -2,22 +2,16 @@ import OpenGL.GLUT as glut
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-import os
 import json
-import random
 import random as rd
 
 play = False
-selesai = False
 w,h = 1000,720
 
-xPlayer = 50
-yPlayer = 50
 xPosition = 500
 yPosition = 100
 
 x_time = 0 
-y_time = 0 
 detik = 1
 penambah_detik = 600//60
 
@@ -28,29 +22,12 @@ xMeteorPos = 0
 yMeteorPos = yBorder
 kecepatan_meteor = 5
 
-x_r_player = random.randrange(300,550,10)
 crash = False
-
-def drawText(ch,xpos,ypos,r,b,g):
-    glPushMatrix()
-    color = (r, b, g)
-    font_style = glut.GLUT_BITMAP_HELVETICA_18
-    glColor3ub(color[0],color[1],color[2])
-    line=0
-    glRasterPos2f (xpos, ypos)
-    for i in ch:
-       if  i=='\n':
-          line=line+1
-          glRasterPos2f (xpos, ypos*line)
-       else:
-          glutBitmapCharacter(font_style, ord(i))  
-    glPopMatrix()  
 
 def drawTextBold(ch,xpos,ypos):
     glPushMatrix()
-    color = (0,0,0)
     font_style = glut.GLUT_BITMAP_HELVETICA_18
-    glColor3ub(color[0],color[1],color[2])
+    glColor3ub(0, 0, 0)
     line=0
     glRasterPos2f (xpos, ypos)
     for i in ch:
@@ -60,19 +37,6 @@ def drawTextBold(ch,xpos,ypos):
        else:
           glutBitmapCharacter(font_style, ord(i))  
     glPopMatrix()  
-
-def drawTextNum(skor,xpos,ypos,r,b,g):
-    color = (r, b, g)
-    font_style = glut.GLUT_BITMAP_8_BY_13
-    glColor3ub(color[0],color[1],color[2])
-    line=0
-    glRasterPos2f (xpos, ypos)
-    for i in str(skor):
-       if  i=='\n':
-          line=line+1
-          glRasterPos2f (xpos, ypos*line)
-       else:
-          glutBitmapCharacter(font_style, ord(i))
 
 def start_game():
     glPushMatrix()
@@ -344,18 +308,8 @@ def start_game():
     glPopMatrix()
     drawTextBold(" P  L  A  Y   G  A  M  E ",410,145)
 
-def bg_text(x,y):
-    glColor3ub(255, 0, 0)     
-    glBegin(GL_QUADS)
-    glVertex2f(295+x,210+y)
-    glVertex2f(445+x,210+y)
-    glVertex2f(445+x,260+y)
-    glVertex2f(295+x,260+y)
-    glEnd()
-
-
 def meteor():
-    global x_r_player, xPlayer, yPlayer, xBorder, xMeteorPos, yMeteorPos
+    global  xBorder, xMeteorPos, yMeteorPos
     glPushMatrix()
     yMeteorPos -= kecepatan_meteor
     if yMeteorPos < -yBorder:
@@ -378,7 +332,7 @@ def meteor():
     glPopMatrix()    
 
 def pesawat():
-    global xPosition, yPosition, xPlayer, yPlayer, selesai, xBorder, yBorder
+    global xPosition, yPosition, xBorder, yBorder
     glPushMatrix()
 
     glTranslated(xPosition, yPosition, 0)
@@ -556,37 +510,23 @@ def game_over():
         glVertex2f(700, 355)
         glEnd()
         drawTextBold(" G A M E   O V E R ",420,420)
-        # drawText("  Click  To  Play",430,405,0, 0, 0)
     glPopMatrix()
 
 kecepatan_pesawat = 15
 def input_keyboard(key,x,y):
     global xPosition, yPosition
     if key == GLUT_KEY_DOWN:
-        if yPosition == 10 : 
-            yPosition -= 0
-        else :
+        if yPosition > 10 : 
             yPosition -= kecepatan_pesawat
-            # collision()
     elif key == GLUT_KEY_UP:
-        if yPosition == 700 : 
-            yPosition += 0
-        else :
+        if yPosition < 700 : 
             yPosition += kecepatan_pesawat
-            # collision()
     elif key == GLUT_KEY_RIGHT:
-        if xPosition == 950 : 
-            xPosition += 0
-        else :
+        if xPosition < 950 : 
             xPosition += kecepatan_pesawat
-            # collision()
     elif key == GLUT_KEY_LEFT:
-        if xPosition == 50 : 
-            xPosition -= 0
-        else :
+        if xPosition > 50 : 
             xPosition -= kecepatan_pesawat
-            # collision()
-    # print(xPosition, yPosition)
 
 def timer(value):
         global x_time
@@ -638,4 +578,4 @@ def main():
     glutMainLoop()
     
 if __name__ == "__main__":
-    main()    
+    main()   
